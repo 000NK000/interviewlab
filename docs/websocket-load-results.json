@@ -1,0 +1,13 @@
+{
+  "rooms" : 8,
+  "users" : 16,
+  "simultaneousSockets" : 16,
+  "editP50Ms" : 8,
+  "editP95Ms" : 11,
+  "durationMs" : 160,
+  "cursorChecks" : 8,
+  "conflictChecks" : 8,
+  "reconnectChecks" : 8,
+  "passed" : true,
+  "time" : "2026-09-23T03:03:07.736248800Z"
+}

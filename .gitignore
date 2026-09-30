@@ -1,0 +1,13 @@
+backend/target/
+backend/data/
+frontend/node_modules/
+frontend/dist/
+.env
+.env.*
+!.env.example
+*.mv.db
+*.trace.db
+.idea/
+.vscode/
+*.log
+.benchmark-runs/

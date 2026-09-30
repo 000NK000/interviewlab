@@ -1,0 +1,185 @@
+{
+  "startedAt": "2026-09-23T02:15:03.148Z",
+  "config": {
+    "port": 18082,
+    "loadJobs": 20,
+    "recoveryJobs": 12,
+    "workers": 2,
+    "queueCapacity": 64,
+    "pollIntervalMs": 200,
+    "jobSleepMs": 250,
+    "recoveryJobSleepMs": 2000
+  },
+  "environment": {
+    "platform": "win32",
+    "arch": "x64",
+    "node": "v24.11.1",
+    "cpuModel": "Intel(R) Core(TM) Ultra 9 285K",
+    "logicalCpus": 24,
+    "memoryGiB": 31.3
+  },
+  "artifacts": {
+    "runDir": "[local path omitted from public report]",
+    "stdoutLog": "[local path omitted from public report]",
+    "stderrLog": "[local path omitted from public report]"
+  },
+  "roomId": "814f3411-e7ee-4791-9e87-35ddf7d72868",
+  "warmup": [
+    "PASSED",
+    "PASSED"
+  ],
+  "judgeLoad": {
+    "accepted": 20,
+    "passed": 20,
+    "failed": 0,
+    "batchDurationMs": 8368.8,
+    "throughputPerSecond": 2.4,
+    "acceptanceLatencyMs": {
+      "p50": 8.6,
+      "p95": 9.9,
+      "p99": 10.1,
+      "max": 10.1
+    },
+    "completionLatencyMs": {
+      "p50": 4342.6,
+      "p95": 8367.8,
+      "p99": 8368,
+      "max": 8368
+    },
+    "peakQueuedObserved": 18,
+    "peakRunningObserved": 2,
+    "submissions": [
+      {
+        "id": "25b20660-7b9d-4165-8ee7-82f03564e54a",
+        "status": "PASSED",
+        "acceptanceMs": 7.7,
+        "completionLatencyMs": 882.5
+      },
+      {
+        "id": "9a67343e-c8ec-4b8c-8dd7-e749400cfc25",
+        "status": "PASSED",
+        "acceptanceMs": 7.7,
+        "completionLatencyMs": 882.4
+      },
+      {
+        "id": "32ee3c53-d995-4350-b4b5-2098c417568e",
+        "status": "PASSED",
+        "acceptanceMs": 7.8,
+        "completionLatencyMs": 1753.4
+      },
+      {
+        "id": "44b502ee-69cc-4f9d-bac7-369862aa4a60",
+        "status": "PASSED",
+        "acceptanceMs": 7.5,
+        "completionLatencyMs": 1753.3
+      },
+      {
+        "id": "17ecbbe7-bdaa-4f11-909f-4b77da7d6f59",
+        "status": "PASSED",
+        "acceptanceMs": 8,
+        "completionLatencyMs": 2612.9
+      },
+      {
+        "id": "bd32420d-ea45-456a-b7c6-5c5103733258",
+        "status": "PASSED",
+        "acceptanceMs": 7.8,
+        "completionLatencyMs": 2612.6
+      },
+      {
+        "id": "b57cf9e4-849c-4ebd-9511-6ba6f6c24c8e",
+        "status": "PASSED",
+        "acceptanceMs": 8.3,
+        "completionLatencyMs": 3477.5
+      },
+      {
+        "id": "9e02317c-1cbf-4dce-8ed8-49a1c5565d5c",
+        "status": "PASSED",
+        "acceptanceMs": 8.3,
+        "completionLatencyMs": 3477.4
+      },
+      {
+        "id": "129aa742-7e7f-464e-9806-607a501fbb58",
+        "status": "PASSED",
+        "acceptanceMs": 8.8,
+        "completionLatencyMs": 4131
+      },
+      {
+        "id": "4141cf85-385a-474f-b49f-d9f2d90901a9",
+        "status": "PASSED",
+        "acceptanceMs": 8.4,
+        "completionLatencyMs": 4342.6
+      },
+      {
+        "id": "a459695e-3fc0-49b6-a299-374e7f99fb74",
+        "status": "PASSED",
+        "acceptanceMs": 8.6,
+        "completionLatencyMs": 4979.7
+      },
+      {
+        "id": "46423744-f129-4bf5-838b-ce948f1d5886",
+        "status": "PASSED",
+        "acceptanceMs": 9,
+        "completionLatencyMs": 4979.7
+      },
+      {
+        "id": "ab496d05-c8f9-447c-a5e0-551faf4ccbe0",
+        "status": "PASSED",
+        "acceptanceMs": 8.9,
+        "completionLatencyMs": 5832.3
+      },
+      {
+        "id": "ab72da5b-dc15-4119-aa9d-94937f6703b7",
+        "status": "PASSED",
+        "acceptanceMs": 9.6,
+        "completionLatencyMs": 5832.1
+      },
+      {
+        "id": "2f032b44-ef24-47a8-aa39-82d5ec1bf948",
+        "status": "PASSED",
+        "acceptanceMs": 9.4,
+        "completionLatencyMs": 6680.1
+      },
+      {
+        "id": "ed76b5f0-bbb4-436b-af34-644abc8a4537",
+        "status": "PASSED",
+        "acceptanceMs": 9.3,
+        "completionLatencyMs": 6680
+      },
+      {
+        "id": "5e4c48e2-fbcf-4965-b21f-2da45d3a5d66",
+        "status": "PASSED",
+        "acceptanceMs": 9.9,
+        "completionLatencyMs": 7519.3
+      },
+      {
+        "id": "dff77d94-04ef-41b8-be23-9edd6cd6d429",
+        "status": "PASSED",
+        "acceptanceMs": 9.5,
+        "completionLatencyMs": 7519.2
+      },
+      {
+        "id": "7826c7c9-89fa-4f68-8c42-b943e6ab550a",
+        "status": "PASSED",
+        "acceptanceMs": 10.1,
+        "completionLatencyMs": 8368
+      },
+      {
+        "id": "49bdcbcb-07df-458d-97d4-4576b2b9046a",
+        "status": "PASSED",
+        "acceptanceMs": 9.8,
+        "completionLatencyMs": 8367.8
+      }
+    ]
+  },
+  "versionRace": {
+    "contenders": 8,
+    "accepted": 1,
+    "conflicts": 7,
+    "finalVersion": 1,
+    "revisionCount": 1,
+    "passed": true
+  },
+  "error": "Error: GET /api/submissions/5ab8ec09-b539-4244-a309-9dd1654b48a7: HTTP 404 {\"error\":\"Submission not found\"}\n    at request (file:///<project>/scripts/load-test.mjs:70:50)\n    at process.processTicksAndRejections (node:internal/process/task_queues:103:5)\n    at async Promise.all (index 4)\n    at async observe (file:///<project>/scripts/load-test.mjs:155:22)\n    at async recovery (file:///<project>/scripts/load-test.mjs:208:20)\n    at async file:///<project>/scripts/load-test.mjs:264:21",
+  "finishedAt": "2026-09-23T02:15:25.339Z",
+  "publicationNote": "Absolute local filesystem paths were omitted. Test metrics and outcomes are unchanged."
+}

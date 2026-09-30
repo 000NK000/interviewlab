@@ -1,0 +1,36 @@
+server:
+  port: ${PORT:18080}
+  servlet:
+    session:
+      cookie:
+        same-site: strict
+        http-only: true
+        secure: ${SECURE_COOKIE:false}
+spring:
+  datasource:
+    url: ${DATABASE_URL:jdbc:h2:file:./data/interviewlab;MODE=PostgreSQL;DATABASE_TO_LOWER=TRUE;WRITE_DELAY=0}
+    username: ${DATABASE_USER:sa}
+    password: ${DATABASE_PASSWORD:}
+  jpa:
+    hibernate:
+      ddl-auto: update
+    open-in-view: false
+  jackson:
+    serialization:
+      write-dates-as-timestamps: false
+app:
+  origin: ${APP_ORIGIN:http://localhost:15173}
+  ai:
+    url: ${OLLAMA_URL:http://127.0.0.1:11434}
+    model: ${OLLAMA_MODEL:qwen3.5:9b-q8_0}
+  judge-workers: ${JUDGE_WORKERS:2}
+  judge-queue-capacity: ${JUDGE_QUEUE_CAPACITY:32}
+  judge-timeout-seconds: ${JUDGE_TIMEOUT_SECONDS:8}
+management:
+  server:
+    port: ${METRICS_PORT:18081}
+    address: 127.0.0.1
+  endpoints:
+    web:
+      exposure:
+        include: health,prometheus

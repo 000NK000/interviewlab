@@ -1,0 +1,114 @@
+{
+  "startedAt": "2026-09-23T02:54:39.226Z",
+  "config": {
+    "port": 18082,
+    "loadJobs": 8,
+    "recoveryJobs": 8,
+    "workers": 2,
+    "queueCapacity": 16,
+    "databaseMode": "h2",
+    "pollIntervalMs": 200,
+    "jobSleepMs": 250,
+    "recoveryJobSleepMs": 2000
+  },
+  "environment": {
+    "platform": "win32",
+    "arch": "x64",
+    "node": "v24.11.1",
+    "cpuModel": "Intel(R) Core(TM) Ultra 9 285K",
+    "logicalCpus": 24,
+    "memoryGiB": 31.3
+  },
+  "artifacts": {
+    "runDir": "[local path omitted from public report]",
+    "stdoutLog": "[local path omitted from public report]",
+    "stderrLog": "[local path omitted from public report]"
+  },
+  "roomId": "1e524b17-8855-4a40-ae71-594e06a07da1",
+  "warmup": [
+    "PASSED",
+    "PASSED"
+  ],
+  "judgeLoad": {
+    "accepted": 8,
+    "passed": 8,
+    "failed": 0,
+    "batchDurationMs": 3671.9,
+    "throughputPerSecond": 2.2,
+    "acceptanceLatencyMs": {
+      "p50": 7.2,
+      "p95": 8.6,
+      "p99": 8.6,
+      "max": 8.6
+    },
+    "completionLatencyMs": {
+      "p50": 1950.2,
+      "p95": 3671.5,
+      "p99": 3671.5,
+      "max": 3671.5
+    },
+    "peakQueuedObserved": 8,
+    "peakRunningObserved": 2,
+    "submissions": [
+      {
+        "id": "6ddaca5f-3748-4c41-ae65-5c272a36e929",
+        "status": "PASSED",
+        "acceptanceMs": 7.2,
+        "completionLatencyMs": 876.3
+      },
+      {
+        "id": "a2869384-2f3e-4ede-8d8c-97df6e86501b",
+        "status": "PASSED",
+        "acceptanceMs": 6.6,
+        "completionLatencyMs": 1090.4
+      },
+      {
+        "id": "4f862549-6236-4eca-aadb-47205108c961",
+        "status": "PASSED",
+        "acceptanceMs": 7.5,
+        "completionLatencyMs": 1736.1
+      },
+      {
+        "id": "ba4f33a0-8c6c-4fde-ba04-b5dcd1e665f5",
+        "status": "PASSED",
+        "acceptanceMs": 7.2,
+        "completionLatencyMs": 1950.2
+      },
+      {
+        "id": "72f2be0a-4c86-480d-8a9c-d02b617836f0",
+        "status": "PASSED",
+        "acceptanceMs": 7.5,
+        "completionLatencyMs": 2593.7
+      },
+      {
+        "id": "7fc36b30-a9c3-474a-89ed-b78ce4bc5c00",
+        "status": "PASSED",
+        "acceptanceMs": 7.1,
+        "completionLatencyMs": 2808.5
+      },
+      {
+        "id": "96d2d452-d5ec-40a7-aeaf-fecd0d9ad1cd",
+        "status": "PASSED",
+        "acceptanceMs": 8.2,
+        "completionLatencyMs": 3453.7
+      },
+      {
+        "id": "c8ccdc1d-aa59-4c1c-9045-9d114d722265",
+        "status": "PASSED",
+        "acceptanceMs": 8.6,
+        "completionLatencyMs": 3671.5
+      }
+    ]
+  },
+  "versionRace": {
+    "contenders": 8,
+    "accepted": 1,
+    "conflicts": 7,
+    "finalVersion": 1,
+    "revisionCount": 1,
+    "passed": true
+  },
+  "error": "Error: GET /api/submissions/95573bfd-9144-4355-8919-311d595ea160: HTTP 404 {\"error\":\"Submission not found\"}\n    at request (file:///<project>/scripts/load-test.mjs:75:50)\n    at process.processTicksAndRejections (node:internal/process/task_queues:103:5)\n    at async Promise.all (index 7)\n    at async observe (file:///<project>/scripts/load-test.mjs:185:22)\n    at async recovery (file:///<project>/scripts/load-test.mjs:238:20)\n    at async file:///<project>/scripts/load-test.mjs:298:21",
+  "finishedAt": "2026-09-23T02:55:03.930Z",
+  "publicationNote": "Absolute local filesystem paths were omitted. Test metrics and outcomes are unchanged."
+}

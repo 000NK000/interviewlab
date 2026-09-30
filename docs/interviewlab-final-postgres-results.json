@@ -1,0 +1,268 @@
+{
+  "startedAt": "2026-09-23T03:12:20.913Z",
+  "config": {
+    "port": 18082,
+    "loadJobs": 20,
+    "recoveryJobs": 12,
+    "workers": 2,
+    "queueCapacity": 64,
+    "databaseMode": "postgres",
+    "splitWorkers": false,
+    "postgresPort": 15434,
+    "postgresImage": "postgres:16-alpine",
+    "pollIntervalMs": 200,
+    "jobSleepMs": 250,
+    "recoveryJobSleepMs": 2000
+  },
+  "environment": {
+    "platform": "win32",
+    "arch": "x64",
+    "node": "v24.11.1",
+    "cpuModel": "Intel(R) Core(TM) Ultra 9 285K",
+    "logicalCpus": 24,
+    "memoryGiB": 31.3
+  },
+  "artifacts": {
+    "runDir": "[local path omitted from public report]",
+    "stdoutLog": "[local path omitted from public report]",
+    "stderrLog": "[local path omitted from public report]"
+  },
+  "roomId": "5ba77f8a-3757-4c7a-a451-9f4e3fb9f939",
+  "warmup": [
+    "PASSED",
+    "PASSED"
+  ],
+  "judgeLoad": {
+    "accepted": 20,
+    "passed": 20,
+    "failed": 0,
+    "batchDurationMs": 9015.2,
+    "throughputPerSecond": 2.2,
+    "acceptanceLatencyMs": {
+      "p50": 74.1,
+      "p95": 119.7,
+      "p99": 124.5,
+      "max": 124.5
+    },
+    "completionLatencyMs": {
+      "p50": 4723.5,
+      "p95": 9013,
+      "p99": 9013.7,
+      "max": 9013.7
+    },
+    "peakQueuedObserved": 19,
+    "peakRunningObserved": 2,
+    "submissions": [
+      {
+        "id": "3fe5722b-c9da-4fec-ad26-0f7bd8736292",
+        "status": "PASSED",
+        "acceptanceMs": 16.7,
+        "completionLatencyMs": 1052.8
+      },
+      {
+        "id": "785b2b25-260e-49b5-b478-8a364e200346",
+        "status": "PASSED",
+        "acceptanceMs": 20.7,
+        "completionLatencyMs": 1052.2
+      },
+      {
+        "id": "e7f293c8-36a7-47d5-8b7f-776e0febda4d",
+        "status": "PASSED",
+        "acceptanceMs": 26.2,
+        "completionLatencyMs": 1934.1
+      },
+      {
+        "id": "a087fc0d-1e7e-4397-9e9d-46952b5d15de",
+        "status": "PASSED",
+        "acceptanceMs": 31.7,
+        "completionLatencyMs": 1933.5
+      },
+      {
+        "id": "6a15913e-b8cd-4857-a73a-eefab2a71f7f",
+        "status": "PASSED",
+        "acceptanceMs": 39.7,
+        "completionLatencyMs": 2794.2
+      },
+      {
+        "id": "a2581ca3-735d-42be-b79e-8ab11a10712f",
+        "status": "PASSED",
+        "acceptanceMs": 46.4,
+        "completionLatencyMs": 2794.1
+      },
+      {
+        "id": "155692e0-82c5-4dd8-b5bd-5ee4f4a9ded7",
+        "status": "PASSED",
+        "acceptanceMs": 59.7,
+        "completionLatencyMs": 3650.6
+      },
+      {
+        "id": "4c90d7cc-8904-4c41-b595-03aa04420a6c",
+        "status": "PASSED",
+        "acceptanceMs": 52.8,
+        "completionLatencyMs": 3650.6
+      },
+      {
+        "id": "35a43a06-c80e-4528-98da-a9d906710c05",
+        "status": "PASSED",
+        "acceptanceMs": 66.7,
+        "completionLatencyMs": 4508.1
+      },
+      {
+        "id": "a886234e-f02c-44c4-8a7e-b2eda24c0969",
+        "status": "PASSED",
+        "acceptanceMs": 74.1,
+        "completionLatencyMs": 4723.5
+      },
+      {
+        "id": "942d5c08-7cd4-4fc2-ae50-58d8d0adf553",
+        "status": "PASSED",
+        "acceptanceMs": 79.1,
+        "completionLatencyMs": 5368.4
+      },
+      {
+        "id": "2b98f062-5b4c-4ea1-8132-ff44d541ecfd",
+        "status": "PASSED",
+        "acceptanceMs": 84,
+        "completionLatencyMs": 5582.1
+      },
+      {
+        "id": "68b7c440-c430-48eb-ab05-376301ee1841",
+        "status": "PASSED",
+        "acceptanceMs": 90,
+        "completionLatencyMs": 6437.6
+      },
+      {
+        "id": "8cb9be10-1284-4594-9ae5-10433e354e40",
+        "status": "PASSED",
+        "acceptanceMs": 94.8,
+        "completionLatencyMs": 6437.2
+      },
+      {
+        "id": "82789b9a-9e54-402b-847c-1814f6b0dbb4",
+        "status": "PASSED",
+        "acceptanceMs": 104,
+        "completionLatencyMs": 7294.2
+      },
+      {
+        "id": "bd5f7882-2f80-440b-b18d-38bf9d33b0a1",
+        "status": "PASSED",
+        "acceptanceMs": 99.6,
+        "completionLatencyMs": 7294.1
+      },
+      {
+        "id": "0bfc72dd-7a8f-40dc-9916-d023a936e93c",
+        "status": "PASSED",
+        "acceptanceMs": 108.4,
+        "completionLatencyMs": 8151.7
+      },
+      {
+        "id": "ab9436b0-841d-4204-8db0-0b98f01d01c2",
+        "status": "PASSED",
+        "acceptanceMs": 113.7,
+        "completionLatencyMs": 8151.5
+      },
+      {
+        "id": "3e1247a9-7426-4662-8a93-b51a09a6d9d8",
+        "status": "PASSED",
+        "acceptanceMs": 119.7,
+        "completionLatencyMs": 9013.7
+      },
+      {
+        "id": "b43cd5d9-2b9e-4e12-ba79-2ad07a8958fa",
+        "status": "PASSED",
+        "acceptanceMs": 124.5,
+        "completionLatencyMs": 9013
+      }
+    ]
+  },
+  "versionRace": {
+    "contenders": 8,
+    "accepted": 1,
+    "conflicts": 7,
+    "finalVersion": 1,
+    "revisionCount": 1,
+    "passed": true
+  },
+  "recovery": {
+    "beforeCrash": {
+      "queued": 10,
+      "running": 2,
+      "total": 12
+    },
+    "restartedAndReadyMs": 8916.8,
+    "postReadyCompletionMs": 15708.1,
+    "totalCrashToCompletionMs": 24624.9,
+    "terminal": 12,
+    "passed": 12,
+    "failed": 0,
+    "uniqueIds": 12,
+    "peakQueuedAfterRestart": 8,
+    "peakRunningAfterRestart": 4,
+    "submissions": [
+      {
+        "id": "86725c25-c202-4e46-8411-bdf392c95d12",
+        "status": "PASSED",
+        "completionLatencyMs": 11868
+      },
+      {
+        "id": "f2a10335-8cce-4188-8117-8e0467c2fe5c",
+        "status": "PASSED",
+        "completionLatencyMs": 11867.7
+      },
+      {
+        "id": "2a5cdfca-b6fc-4a3f-81ca-91c5817c5fb6",
+        "status": "PASSED",
+        "completionLatencyMs": 14458
+      },
+      {
+        "id": "3980d50f-687b-425d-92f3-3ac9255573ad",
+        "status": "PASSED",
+        "completionLatencyMs": 14457.7
+      },
+      {
+        "id": "05d9c268-af44-43bc-acd7-2ded199539d2",
+        "status": "PASSED",
+        "completionLatencyMs": 17040.3
+      },
+      {
+        "id": "8a2e3b10-efc0-4542-a2d8-3be48a1aac58",
+        "status": "PASSED",
+        "completionLatencyMs": 17040.2
+      },
+      {
+        "id": "c58f83a5-87a4-4d6a-946f-9733caa59940",
+        "status": "PASSED",
+        "completionLatencyMs": 19632.5
+      },
+      {
+        "id": "45df84da-88b5-4ad9-8a4f-8d938b3f2fd6",
+        "status": "PASSED",
+        "completionLatencyMs": 19632.2
+      },
+      {
+        "id": "86e13195-7ffb-4e22-b1cf-6aa1c9b67ed5",
+        "status": "PASSED",
+        "completionLatencyMs": 22220.9
+      },
+      {
+        "id": "af768cda-55a6-4fa6-ba13-a0170b3e572c",
+        "status": "PASSED",
+        "completionLatencyMs": 22220.7
+      },
+      {
+        "id": "6ee394b6-9ba5-4a4d-acce-31c9dda05193",
+        "status": "PASSED",
+        "completionLatencyMs": 24810.8
+      },
+      {
+        "id": "ac63767d-bc76-4ead-8c8d-e6b2ed4162f6",
+        "status": "PASSED",
+        "completionLatencyMs": 24810.7
+      }
+    ],
+    "success": true
+  },
+  "overallPass": true,
+  "finishedAt": "2026-09-23T03:13:08.596Z",
+  "publicationNote": "Absolute local filesystem paths were omitted. Test metrics and outcomes are unchanged."
+}

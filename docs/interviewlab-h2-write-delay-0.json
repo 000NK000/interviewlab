@@ -1,0 +1,173 @@
+{
+  "startedAt": "2026-09-23T02:55:37.922Z",
+  "config": {
+    "port": 18082,
+    "loadJobs": 8,
+    "recoveryJobs": 8,
+    "workers": 2,
+    "queueCapacity": 16,
+    "databaseMode": "h2",
+    "pollIntervalMs": 200,
+    "jobSleepMs": 250,
+    "recoveryJobSleepMs": 2000
+  },
+  "environment": {
+    "platform": "win32",
+    "arch": "x64",
+    "node": "v24.11.1",
+    "cpuModel": "Intel(R) Core(TM) Ultra 9 285K",
+    "logicalCpus": 24,
+    "memoryGiB": 31.3
+  },
+  "artifacts": {
+    "runDir": "[local path omitted from public report]",
+    "stdoutLog": "[local path omitted from public report]",
+    "stderrLog": "[local path omitted from public report]"
+  },
+  "roomId": "ba295565-5d56-4b45-a540-2ee91d5ef8e3",
+  "warmup": [
+    "PASSED",
+    "PASSED"
+  ],
+  "judgeLoad": {
+    "accepted": 8,
+    "passed": 8,
+    "failed": 0,
+    "batchDurationMs": 3668.5,
+    "throughputPerSecond": 2.2,
+    "acceptanceLatencyMs": {
+      "p50": 7.4,
+      "p95": 11.2,
+      "p99": 11.2,
+      "max": 11.2
+    },
+    "completionLatencyMs": {
+      "p50": 1950.8,
+      "p95": 3667.9,
+      "p99": 3667.9,
+      "max": 3667.9
+    },
+    "peakQueuedObserved": 8,
+    "peakRunningObserved": 2,
+    "submissions": [
+      {
+        "id": "78332613-5fab-4e59-ab64-cbd626a736c7",
+        "status": "PASSED",
+        "acceptanceMs": 7.1,
+        "completionLatencyMs": 1093.6
+      },
+      {
+        "id": "423b350c-de05-49b4-b828-d1a3493b40a3",
+        "status": "PASSED",
+        "acceptanceMs": 7,
+        "completionLatencyMs": 1093.1
+      },
+      {
+        "id": "e2822b57-7956-48a6-9c0e-91ecf37d052d",
+        "status": "PASSED",
+        "acceptanceMs": 6.9,
+        "completionLatencyMs": 1950.8
+      },
+      {
+        "id": "053c0f4a-258f-4564-823c-9cc4ae9abe49",
+        "status": "PASSED",
+        "acceptanceMs": 7.4,
+        "completionLatencyMs": 1950.7
+      },
+      {
+        "id": "f5d2509b-36c6-4975-af7b-8928a81e8d39",
+        "status": "PASSED",
+        "acceptanceMs": 8,
+        "completionLatencyMs": 2809.5
+      },
+      {
+        "id": "a51f2102-9c9f-41b6-9864-cb3fc55947b6",
+        "status": "PASSED",
+        "acceptanceMs": 8,
+        "completionLatencyMs": 2809.4
+      },
+      {
+        "id": "2e78049f-7ee3-44b0-83ed-438a09465303",
+        "status": "PASSED",
+        "acceptanceMs": 7.9,
+        "completionLatencyMs": 3667.9
+      },
+      {
+        "id": "2fa13efd-606c-43e6-8d7a-b7d51be53b58",
+        "status": "PASSED",
+        "acceptanceMs": 11.2,
+        "completionLatencyMs": 3667.7
+      }
+    ]
+  },
+  "versionRace": {
+    "contenders": 8,
+    "accepted": 1,
+    "conflicts": 7,
+    "finalVersion": 1,
+    "revisionCount": 1,
+    "passed": true
+  },
+  "recovery": {
+    "beforeCrash": {
+      "queued": 6,
+      "running": 2,
+      "total": 8
+    },
+    "restartedAndReadyMs": 8995.9,
+    "postReadyCompletionMs": 10520.4,
+    "totalCrashToCompletionMs": 19516.4,
+    "terminal": 8,
+    "passed": 8,
+    "failed": 0,
+    "uniqueIds": 8,
+    "peakQueuedAfterRestart": 4,
+    "peakRunningAfterRestart": 4,
+    "submissions": [
+      {
+        "id": "2068a708-4386-4003-b8a7-593b7804f378",
+        "status": "PASSED",
+        "completionLatencyMs": 11899.5
+      },
+      {
+        "id": "8462de8b-c6c9-4b86-b796-972a544bffe0",
+        "status": "PASSED",
+        "completionLatencyMs": 11899.4
+      },
+      {
+        "id": "1b5e2413-c2c9-4b6f-b051-1b38e558b4b8",
+        "status": "PASSED",
+        "completionLatencyMs": 14483.1
+      },
+      {
+        "id": "9b7073b6-a57b-4dbb-8eb5-a6d42ad52331",
+        "status": "PASSED",
+        "completionLatencyMs": 14483
+      },
+      {
+        "id": "1208dee0-6ff1-432c-8fea-e3f30b29e3b4",
+        "status": "PASSED",
+        "completionLatencyMs": 17073.2
+      },
+      {
+        "id": "3c28901c-6ea2-46f7-a7cd-ebc418382240",
+        "status": "PASSED",
+        "completionLatencyMs": 17072.7
+      },
+      {
+        "id": "d2355dff-c0b9-4d77-9f64-410f6920e979",
+        "status": "PASSED",
+        "completionLatencyMs": 19648.4
+      },
+      {
+        "id": "ae554ac6-b649-4db4-b6ff-1a74d81d2b05",
+        "status": "PASSED",
+        "completionLatencyMs": 19648.3
+      }
+    ],
+    "success": true
+  },
+  "overallPass": true,
+  "finishedAt": "2026-09-23T02:56:12.864Z",
+  "publicationNote": "Absolute local filesystem paths were omitted. Test metrics and outcomes are unchanged."
+}
