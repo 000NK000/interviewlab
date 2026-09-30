@@ -72,7 +72,7 @@ function endReplay(){replayIndex.value=null;setCode(room.value.code);editor?.upd
 async function copyInvite(){await navigator.clipboard.writeText(invitation.value);notify('Invitation copied')}
 async function refreshInvite(){try{const response=await api('/rooms/'+room.value.id+'/invitation',{method:'POST'});invitation.value=location.origin+'/?room='+room.value.id+'&invite='+response.inviteToken;await copyInvite()}catch(e){error.value=e.message}}
 function result(s){try{return JSON.parse(s?.resultJson||'{}')}catch{return {}}}
-function date(s){return s?new Date(s).toLocaleString([], {month:'short',day:'numeric',hour:'numeric',minute:'2-digit'}):''}
+function date(s){return s?new Date(s).toLocaleString('en-US', {month:'short',day:'numeric',hour:'numeric',minute:'2-digit'}):''}
 onMounted(async()=>{try{me.value=await api('/auth/me');await dashboard();await maybeJoin()}catch{me.value=null}})
 onBeforeUnmount(closeRoom)
 </script>

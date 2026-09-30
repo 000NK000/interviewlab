@@ -1,20 +1,20 @@
-# InterviewLab 并发与故障恢复验证
+# InterviewLab Concurrency and Failure Recovery Validation
 
-## 扩容复测（2026-09-23）
+## Expanded local benchmark (2026-09-23)
 
-在同一台 Windows 本机上，把 PostgreSQL 判题场景扩大到 64 个同时发起的提交；API 与判题进程分离，单个判题 JVM 内配置 4 个 worker 线程。WebSocket 场景扩大到 100 个房间、200 个模拟客户端。判题程序仍先休眠 250 ms 再输出 `ok`；正式计时前顺序预热两次。API、worker 和 PostgreSQL 使用压测专属进程/容器与端口，不连接正常的 18080 服务。
+The PostgreSQL judging workload was expanded to 64 submissions initiated concurrently on one Windows machine. The API runs in one JVM, and a separate judge JVM contains four worker threads. The WebSocket workload was expanded to 100 rooms and 200 simulated clients. Each judge program sleeps for 250 ms before printing `ok`; two sequential warm-up jobs run before measurement. The API, judge, and PostgreSQL use dedicated benchmark processes, containers, and ports, separate from the regular service on port 18080.
 
-| 场景 | 结果 | 本机测量 |
+| Scenario | Result | Local measurements |
 |---|---:|---:|
-| PostgreSQL，独立 API 进程与单个判题 JVM（4 个 worker 线程），64 个并发提交 | 64/64 通过 | 完成吞吐 4.5 个/s；POST p50/p95 190.1/360 ms；完成 p50/p95 7.36/13.81 s |
-| 强制终止独立 worker，再重启 | 16/16 通过 | 从终止到全部完成 17.65 s，其中脚本固定等待 worker 启动约 3.58 s |
-| 100 房间、200 个同时在线的模拟 WebSocket 客户端 | 100/100 房间通过 | 每房间检查光标、编辑、旧版本冲突和重连；编辑广播 p50/p95 18/27 ms |
+| PostgreSQL, one API JVM and one separate judge JVM with four worker threads, 64 concurrent submissions | 64/64 passed | Batch completion throughput: 4.5 jobs/s; POST p50/p95: 190.1/360 ms; completion p50/p95: 7.36/13.81 s |
+| Force-terminate the separate judge process, then restart it | 16/16 passed | 17.65 s from termination to all jobs completing, including approximately 3.58 s in the script's fixed startup-wait phase |
+| 100 rooms, 200 simultaneously connected simulated WebSocket clients | 100/100 rooms passed | Cursor, edit, stale-version conflict, and reconnect checks in every room; edit broadcast p50/p95: 18/27 ms |
 
-WebSocket 测试在所有房间的两条连接收到初始快照后使用同步屏障，确保 200 条连接**同时保持在线**，再并发执行操作。编辑延迟从候选端发送编辑到面试官端收到广播；这是一轮短时本机测试，不能推断长时间稳定连接、公网延迟或跨 API 实例扩容。判题吞吐和完成延迟按下文相同方法统计，包含 Docker 容器启动、250 ms 程序休眠与最多约 200 ms 的状态轮询误差。64 是提交数，不是 64 个同时运行的容器；正常批次观测到最多 4 个 `RUNNING`。
+The WebSocket test uses a synchronization barrier after both connections in every room receive their initial snapshots. This ensures that all 200 connections are **online simultaneously** before concurrent operations begin. Edit latency is measured from the candidate sending an edit to the interviewer receiving its broadcast. This is a short local test; it does not establish long-term connection stability, public Internet latency, or scaling across API instances. Judge throughput and completion latency use the method described below and include Docker container startup, the program's 250 ms sleep, and up to approximately 200 ms of polling observation delay. The 64 submissions were queued for bounded execution; the normal batch had at most four records observed in `RUNNING` state.
 
-worker 崩溃后，数据库中旧租约的 `RUNNING` 记录可与新 worker 正在执行的记录暂时并存；恢复阶段轮询到的 `RUNNING` 峰值为 7，不等于 7 个新 worker。该系统提供至少一次执行与最终恢复，不能声称故障期间恰好执行一次。原始结果分别见 [`judge-load-results-64jobs.json`](judge-load-results-64jobs.json) 和 [`websocket-load-results-200clients.json`](websocket-load-results-200clients.json)。
+After the judge process crashes, `RUNNING` records with old leases may temporarily coexist with records being executed by the restarted process. The peak observed `RUNNING` count during recovery was seven; it does not represent seven new workers. The system provides at-least-once execution and eventual recovery, rather than exactly-once execution during failures. Raw results are available in [`judge-load-results-64jobs.json`](judge-load-results-64jobs.json) and [`websocket-load-results-200clients.json`](websocket-load-results-200clients.json).
 
-复现命令（项目根目录，先构建 JAR 并确认 Docker Desktop 可用）：
+To reproduce, start in the project root, build the JAR, and ensure Docker Desktop is available:
 
 ```powershell
 cd backend
@@ -25,35 +25,35 @@ cd backend
 mvn -B '-Dtest=MultiRoomLoadTest' '-Dinterviewlab.ws.rooms=100' '-Dinterviewlab.ws.out=../docs/websocket-load-results-200clients.json' test
 ```
 
-## 基线实测（2026-09-22）
+## Baseline measurements (2026-09-22)
 
-2026-09-22 在 Windows 本机运行。机器为 Intel Core Ultra 9 285K、24 个逻辑处理器、31.3 GiB 内存；Java 17、Node 24、Docker Desktop、PostgreSQL 16。判题作业是 Python 程序，先休眠 250 ms 再输出 `ok`；故障恢复作业休眠 2 秒。每组判题在正式计时前进行了两次顺序预热。
+The baseline tests ran locally on Windows on 2026-09-22. The machine had an Intel Core Ultra 9 285K, 24 logical processors, and 31.3 GiB of memory, with Java 17, Node 24, Docker Desktop, and PostgreSQL 16. Judge jobs were Python programs that slept for 250 ms before printing `ok`; recovery jobs slept for two seconds. Each judge benchmark included two sequential warm-up jobs before measurement.
 
-| 场景 | 判题完成 | 完成吞吐 | POST p50/p95 | 完成 p50/p95 | 故障后完成 |
+| Scenario | Judge jobs completed | Batch completion throughput | POST p50/p95 | Completion p50/p95 | Jobs completed after failure |
 |---|---:|---:|---:|---:|---:|
-| PostgreSQL，API 内含 2 个 worker | 20/20 | 2.2 个/s | 74.1/119.7 ms | 4.72/9.01 s | API 强制终止后 12/12 |
-| PostgreSQL，API 与 2 个 worker 分进程 | 12/12 | 2.3 个/s | 45/82.6 ms | 2.67/5.25 s | 仅 worker 强制终止后 8/8 |
-| H2 文件库，`WRITE_DELAY=0` | 8/8 | 2.2 个/s | 7.4/11.2 ms | 1.95/3.67 s | API 强制终止后 8/8 |
+| PostgreSQL, two worker threads in the API JVM | 20/20 | 2.2 jobs/s | 74.1/119.7 ms | 4.72/9.01 s | 12/12 after force-terminating the API |
+| PostgreSQL, separate API and judge JVMs, two worker threads in the judge JVM | 12/12 | 2.3 jobs/s | 45/82.6 ms | 2.67/5.25 s | 8/8 after force-terminating only the judge process |
+| H2 file database, `WRITE_DELAY=0` | 8/8 | 2.2 jobs/s | 7.4/11.2 ms | 1.95/3.67 s | 8/8 after force-terminating the API |
 
-三组都进行了 8 个同版本并发编辑请求，结果是 1 个接受、7 个返回 409。两组 PostgreSQL 判题观测到最多 2 个 `RUNNING`，其余处于 `QUEUED`。分进程测试中 API 在 worker 被强制终止时仍可访问。PostgreSQL 数值来自加入全局容量事务锁后的最终版本；此前无事务容量锁的结果不与此混用。三组原始 JSON 分别见 [`interviewlab-final-postgres-results.json`](interviewlab-final-postgres-results.json)、[`interviewlab-final-split-results.json`](interviewlab-final-split-results.json)、[`interviewlab-h2-write-delay-0.json`](interviewlab-h2-write-delay-0.json)。
+Each scenario also issued eight concurrent edits with the same base version: one was accepted and seven returned HTTP 409. Both PostgreSQL runs had at most two submissions observed in `RUNNING` state; the others remained `QUEUED`. In the separate-process test, the API remained accessible when the judge process was forcibly terminated. The PostgreSQL measurements come from the final version with a transactional lock enforcing global queue capacity. Earlier results without that lock are not combined with these measurements. The three raw reports are [`interviewlab-final-postgres-results.json`](interviewlab-final-postgres-results.json), [`interviewlab-final-split-results.json`](interviewlab-final-split-results.json), and [`interviewlab-h2-write-delay-0.json`](interviewlab-h2-write-delay-0.json).
 
-**测量方法：**POST 延迟从请求发出到收到成功响应；完成延迟从请求发出到每 200 ms 的 GET 轮询首次观察到终态。吞吐为完成任务数除以批次首个提交到全部观察到终态的时间。p50/p95 采用 nearest-rank。因此数值包含 Docker 启动、执行及最多约 200 ms 的观察误差。分进程测试的“worker 重启到可用”时间是启动后固定等待 3.5 秒的脚本阶段，不是主动探测的 readiness 指标。
+**Measurement method:** POST latency runs from sending the request to receiving a successful response. Completion latency runs from sending the request until a GET poll, performed every 200 ms, first observes a terminal state. Throughput is the number of completed jobs divided by the elapsed time from the batch's first submission until all jobs are observed in a terminal state. The p50/p95 values use the nearest-rank method. Measurements therefore include Docker startup, execution, and up to approximately 200 ms of observation delay. In separate-process tests, the reported worker restart-to-ready time is a script phase with a fixed 3.5-second wait after startup; it is not an actively probed readiness metric.
 
-## H2 故障复现与修复边界
+## H2 failure reproduction and durability limits
 
-早期 H2 文件模式使用默认延迟写入设置。强制终止后端后，曾出现已返回成功响应的 submission ID 在重启后返回 404；旧失败数据保留在 [`interviewlab-benchmark-h2-failure.json`](interviewlab-benchmark-h2-failure.json)。使用新数据库领取逻辑但仍保持默认写入延迟时，8 个恢复任务再次出现 404，记录在 [`interviewlab-h2-retest.json`](interviewlab-h2-retest.json)。把 H2 URL 改成 `WRITE_DELAY=0` 后，相同 8 任务场景 8/8 恢复。这个对照支持延迟写入是关键因素，但单次通过不等于 H2 对任意断电或磁盘故障具备生产级持久性；正式演示使用 PostgreSQL。
+Early H2 file-mode tests used the default delayed-write setting. After the backend was forcibly terminated and restarted, some submission IDs that had received successful responses returned HTTP 404. The original failure report is [`interviewlab-benchmark-h2-failure.json`](interviewlab-benchmark-h2-failure.json). With the new database claim logic but the same default write delay, eight recovery jobs again returned 404; that result is recorded in [`interviewlab-h2-retest.json`](interviewlab-h2-retest.json). After changing the H2 URL to `WRITE_DELAY=0`, all 8/8 jobs recovered in the same scenario. This comparison supports delayed writes as a key factor. A single passing run does not establish durability under arbitrary power loss or disk failure; PostgreSQL is used for the primary demonstration.
 
-新队列不再把数据库中的任务复制到容量有限的内存队列。任务保留在数据库中，故障后由新 worker 在租约过期时领取，因此队列已满不会把已接受任务标成 `ERROR`。容量限制通过 `judge_queue_gate` 行锁串行检查；单元测试同时发起 8 次提交，在容量 2、无 worker 的配置下，精确得到 2 次接受和 6 次 429。
+The revised queue keeps jobs in the database instead of copying them into a bounded in-memory queue. After a failure, new workers claim jobs when their leases expire, so a full queue does not cause already accepted jobs to be marked `ERROR`. A row lock on `judge_queue_gate` serializes capacity checks. A test with eight simultaneous submissions, capacity two, and no active workers produced exactly two accepted submissions and six HTTP 429 responses.
 
-## 多房间 WebSocket 测试
+## Multi-room WebSocket tests
 
-`MultiRoomLoadTest` 在 H2 测试库中创建 8 个房间、16 个用户和 16 条 WebSocket 连接；并发进行每房间的光标传输、编辑、旧版本冲突与候选人断线重连。8/8 个房间均通过，编辑广播的本机 p50 为 8 ms、p95 为 11 ms。并发操作阶段耗时 160 ms，不含账户和房间准备。原始数据见 `docs/websocket-load-results.json`。这一早期测试没有连接同步屏障，不能单凭它证明 16 条连接在同一瞬间在线；上面的 200 连接扩容复测加入了同步屏障。这仅是本机测试，不代表公网或长时间连接可靠性。
+The baseline `MultiRoomLoadTest` created eight rooms, 16 users, and 16 WebSocket connections in an H2 test database. It exercised cursor transmission, editing, stale-version conflicts, and candidate reconnection concurrently across rooms. All 8/8 rooms passed. Local edit broadcast latency was 8 ms at p50 and 11 ms at p95. The concurrent operation phase took 160 ms, excluding account and room preparation. Raw data is in [`websocket-load-results.json`](websocket-load-results.json). This early test did not include a connection barrier, so its result alone does not prove that all 16 connections were online at the same instant. The expanded 200-connection test above adds that barrier. These local tests do not establish public Internet performance or long-term connection reliability.
 
-固定题目端到端测试 `scripts/curated-smoke.mjs` 使用真实 Docker 容器验证 Two Sum：Python、Java 均为 3/3 用例通过（1 样例、2 个额外用例），重复发送相同 `Idempotency-Key` 得到相同 submission ID，且额外用例的输入和预期输出未出现在客户端结果中。数据见 `docs/curated-smoke-results.json`。
+The curated problem test in `scripts/curated-smoke.mjs` uses real Docker containers to validate Two Sum. Both Python and Java passed 3/3 cases: one sample and two additional cases. Repeating the same `Idempotency-Key` returned the same submission ID, and the additional cases' input and expected output were absent from client-facing results. See [`curated-smoke-results.json`](curated-smoke-results.json).
 
-## 复现命令
+## Reproduction commands
 
-从项目根目录执行，先确认 Docker Desktop 可用、镜像已拉取，且压测默认端口空闲：
+Run from the project root after starting Docker Desktop, pulling the required images, and checking that the default benchmark ports are available:
 
 ```powershell
 cd backend
@@ -65,17 +65,19 @@ cd backend
 mvn -B '-Dtest=MultiRoomLoadTest' '-Dinterviewlab.ws.out=../docs/websocket-load-results.json' test
 ```
 
-脚本仅启动并终止自己的临时进程和 PostgreSQL 容器，不连接默认 18080 服务。`--db=h2` 可复测文件库；分进程模式要求 PostgreSQL。压测日志写入 `.benchmark-runs/`，可用 `--out=...` 保存原始 JSON。
+The script starts and terminates only its own temporary processes and PostgreSQL container; it does not connect to the default service on port 18080. Use `--db=h2` to retest the file database. Separate API and judge processes require PostgreSQL. Benchmark logs are written to `.benchmark-runs/`; use `--out=...` to save the raw JSON report.
 
-## 代码深挖要点
+## Implementation details
 
-1. `JudgeService.submit`：在数据库事务内锁定 `judge_queue_gate`，检查未完成数量，将代码/语言/用例快照落库；容量满返回 429。可选 `Idempotency-Key` 使同一请求重试返回同一 submission，key 对应不同内容返回 409。
-2. `JudgeService.claimNext`：多个 worker 查询可领取 ID，再用有条件的数据库更新把 `QUEUED` 或租约过期的 `RUNNING` 改成新租约；更新成功的一个 worker 才能执行。每 2 秒续约，租约 10 秒。
-3. `JudgeService.execute`：短生命周期 Docker 容器禁网、只读根文件系统、非 root，并限制 CPU、内存、进程数、运行时间和输出量。worker 崩溃后旧容器可能仍在运行，因此新 worker 的重试属于**至少一次执行**，不能声称 exactly-once。
-4. `RoomService.edit`：对房间行加写锁并比较 `baseVersion`，旧编辑返回 409。客户端保留未提交草稿；修订表记录每个被接受的版本。
-5. `RoomSocket`：本进程编辑/光标即时广播；API 定时从数据库读取判题状态并推送来自独立 worker 的变化。数据库共享任务不等于 WebSocket 跨 API 副本同步，所以当前保持单 API 实例。
-6. Micrometer/Prometheus：本机独立端口输出排队数、运行数、提交/完成计数、排队等待与执行计时、WebSocket 连接数。分进程时 API 与 worker 的指标分别采集，不能将单进程指标误读为全局总量。
+1. `JudgeService.submit` locks `judge_queue_gate` inside a database transaction, checks the number of unfinished jobs, and persists a snapshot of the code, language, and test cases. It returns HTTP 429 when capacity is exhausted. An optional `Idempotency-Key` makes retries return the same submission; reusing a key with different content returns HTTP 409.
+2. `JudgeService.claimNext` lets workers query eligible IDs and use a conditional database update to replace a `QUEUED` state or an expired `RUNNING` lease with a new lease. Only the worker whose update succeeds may execute the job. Leases last ten seconds and renew every two seconds.
+3. `JudgeService.execute` runs short-lived Docker containers with networking disabled, a read-only root filesystem, a non-root user, and limits on CPU, memory, process count, runtime, and output. An old container may continue running after its judge process crashes, so retries provide **at-least-once execution**, not exactly-once execution.
+4. `RoomService.edit` takes a write lock on the room row and compares `baseVersion`; stale edits return HTTP 409. The client retains unsent drafts, and the revision table records every accepted version.
+5. `RoomSocket` immediately broadcasts edits and cursors within the current process. The API periodically reads judge status from the database and pushes changes made by the separate judge process. Shared database jobs do not provide WebSocket synchronization across API replicas, so the current deployment uses one API instance.
+6. Micrometer/Prometheus exposes queue depth, running jobs, submission/completion counts, queue wait and execution durations, and WebSocket connection counts on a dedicated local port. API and judge metrics are collected separately in the separate-process configuration; process-local counters should not be interpreted as global totals.
 
-## 简历表述边界
+## Interpretation and limitations
 
-可以写：本机 PostgreSQL 测试中，4 个 worker 完成 64/64 个并发提交（完成吞吐 4.5 个任务/秒）；单独终止 worker 后恢复 16/16 个任务；100 个房间的 200 条同时在线模拟 WebSocket 连接通过短时编辑、冲突和重连测试（本机编辑广播 p95 27 ms）。64 是**提交数**，不是 64 个用户；200 是模拟客户端，不是真实用户。这不是生产 SLA、跨主机扩容证明、长时间连接可靠性、真实用户研究或云部署结果。题库额外测试只对客户端隐藏，源码公开，不能作为防作弊机制。
+The expanded local PostgreSQL test completed 64/64 concurrent submissions with four worker threads in one judge JVM, at a batch completion throughput of 4.5 jobs/s. It recovered 16/16 jobs after that judge process was forcibly terminated and restarted. A separate short WebSocket test validated editing, conflicts, and reconnects across 100 rooms with 200 simultaneously connected simulated clients, with local p95 edit broadcast latency of 27 ms.
+
+The 64 figure counts **submissions**, not users or simultaneously executing containers. The 200 figure counts simulated clients, not real users. These measurements do not establish a production SLA, cross-host scaling, long-term connection reliability, a real-user study, or cloud deployment performance. Additional problem tests are hidden only from the client; their source is public, so they are not an anti-cheating mechanism.

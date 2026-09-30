@@ -24,7 +24,7 @@ async function run(kind,path,body) {
   finally{busy.value=''}
 }
 function output(event){try{return JSON.parse(event.resultJson||'{}')}catch{return {}}}
-function date(value){return value?new Date(value).toLocaleString([], {month:'short',day:'numeric',hour:'numeric',minute:'2-digit'}):''}
+function date(value){return value?new Date(value).toLocaleString('en-US', {month:'short',day:'numeric',hour:'numeric',minute:'2-digit'}):''}
 watch(()=>props.room.id,load)
 onMounted(load)
 </script>
